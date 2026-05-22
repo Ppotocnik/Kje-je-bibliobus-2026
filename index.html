@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bibliobus – Razpored obiskov 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1f3c;
+    --navy-mid: #162d52;
+    --navy-light: #1e3d6e;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-pale: #f5e9c8;
+    --green: #2e7d5e;
+    --green-light: #3fa87c;
+    --green-pale: #d4f0e4;
+    --white: #ffffff;
+    --off-white: #f4f1eb;
+    --text-muted: #a0afc0;
+    --card-bg: rgba(255,255,255,0.06);
+    --card-border: rgba(201,168,76,0.25);
+  }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .bb-header {
+    background: linear-gradient(160deg, #0a1628 0%, #162d52 60%, #0f2040 100%);
+    border-bottom: 1px solid var(--card-border);
+    padding: 2rem 1.5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .bb-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .bb-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(46,125,94,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .bb-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 0.5rem;
+  }
+  .bb-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.3);
+  }
+  .bb-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .bb-subtitle {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .bb-tagline {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+  .bb-tagline span {
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  /* ── MAIN ── */
+  .bb-main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  /* ── TABS ── */
+  .bb-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 4px;
+    border: 1px solid var(--card-border);
+  }
+  .bb-tab {
+    flex: 1;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .bb-tab:hover { color: var(--white); }
+  .bb-tab.active {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(201,168,76,0.3);
+  }
+  .bb-tab svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ── VIEWS ── */
+  .bb-view { display: none; }
+  .bb-view.active { display: block; }
+
+  /* ── DATE CONTROLS ── */
+  .bb-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+    align-items: center;
+  }
+  .bb-nav {
+    padding: 9px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    color: var(--gold-light);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .bb-nav:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+  .bb-date-input {
+    flex: 1;
+    padding: 9px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    color: var(--white);
+    font-size: 14px;
+    font-family: 'Source Sans 3', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+    color-scheme: dark;
+  }
+  .bb-date-input:focus { border-color: var(--gold); }
+
+  /* ── DAY CARD ── */
+  .bb-day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .bb-day-header {
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.06);
+  }
+  .bb-day-label {
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .bb-day-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--white);
+  }
+  .bb-stops {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .bb-stop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: background 0.15s;
+  }
+  .bb-stop:hover { background: rgba(255,255,255,0.08); }
+  .bb-stop-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .icon-os { background: rgba(63,168,124,0.2); }
+  .icon-gd { background: rgba(201,168,76,0.2); }
+  .icon-vrt { background: rgba(255,180,100,0.2); }
+  .icon-vd { background: rgba(100,160,220,0.2); }
+  .icon-ap { background: rgba(180,100,255,0.2); }
+  .icon-du { background: rgba(255,100,120,0.2); }
+  .icon-other { background: rgba(255,255,255,0.1); }
+  .bb-stop-time {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold-light);
+    min-width: 88px;
+    font-variant-numeric: tabular-nums;
+  }
+  .bb-stop-name {
+    flex: 1;
+    font-size: 14px;
+    color: var(--white);
+  }
+  .bb-stop-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .bb-no-service {
+    padding: 2rem 1.25rem;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .bb-no-service .no-icon { font-size: 32px; margin-bottom: 10px; }
+  .bb-no-service p { font-size: 15px; }
+  .bb-stop-count {
+    padding: 0.5rem 1.25rem 0.75rem;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .bb-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green-light);
+    display: inline-block;
+  }
+
+  /* ── SEARCH ── */
+  .bb-search-wrap {
+    position: relative;
+    margin-bottom: 1.25rem;
+  }
+  .bb-search-icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+    pointer-events: none;
+  }
+  .bb-search-input {
+    width: 100%;
+    padding: 11px 14px 11px 38px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--white);
+    font-size: 15px;
+    font-family: 'Source Sans 3', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .bb-search-input::placeholder { color: var(--text-muted); }
+  .bb-search-input:focus { border-color: var(--gold); }
+  .bb-result-group {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .bb-result-header {
+    padding: 10px 14px;
+    background: rgba(201,168,76,0.08);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+  .bb-result-stop {
+    padding: 8px 14px;
+    font-size: 14px;
+    color: var(--white);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 12px;
+  }
+  .bb-result-stop:last-child { border-bottom: none; }
+  .bb-result-time {
+    color: var(--gold);
+    font-weight: 500;
+    min-width: 90px;
+    font-size: 13px;
+  }
+
+  /* ── LEGEND ── */
+  .bb-legend {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+  }
+  .bb-legend-title {
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .bb-legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 6px;
+  }
+  .bb-legend-item {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .bb-legend-dot {
+    width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  .bb-footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    margin-top: 1rem;
+  }
+  .bb-footer a { color: var(--gold); text-decoration: none; }
+  .bb-footer a:hover { text-decoration: underline; }
+
+  /* ── HOLIDAY BADGE ── */
+  .bb-holiday {
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(201,168,76,0.08);
+    border-radius: 10px;
+    margin: 0.75rem;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .bb-holiday-icon { font-size: 24px; }
+  .bb-holiday-text { font-size: 14px; color: var(--gold-pale); }
+
+  @media (max-width: 480px) {
+    .bb-title { font-size: 22px; }
+    .bb-stop-time { min-width: 70px; font-size: 12px; }
+    .bb-stop-name { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bb-header">
+  <div style="max-width:700px;margin:0 auto;">
+    <div class="bb-brand">
+      <div class="bb-icon">🚌</div>
+      <div>
+        <div class="bb-title">Bibliobus</div>
+        <div class="bb-subtitle">Knjižnica Ivana Potrča Ptuj</div>
+      </div>
+    </div>
+    <div class="bb-tagline">Potujoča knjižnica · <span>56 postajališč v 16 občinah</span> · 2026</div>
+  </div>
+</div>
+
+<div class="bb-main">
+
+  <div class="bb-tabs">
+    <button class="bb-tab active" onclick="switchTab('danes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Danes / datum
+    </button>
+    <button class="bb-tab" onclick="switchTab('iskanje')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Poišči postajališče
+    </button>
+  </div>
+
+  <div id="view-danes" class="bb-view active">
+    <div class="bb-controls">
+      <button class="bb-nav" onclick="changeDay(-1)" title="Prejšnji dan">&#8249;</button>
+      <input type="date" class="bb-date-input" id="datePicker" onchange="onDateChange(this.value)" min="2026-01-01" max="2026-12-31">
+      <button class="bb-nav" onclick="changeDay(1)" title="Naslednji dan">&#8250;</button>
+    </div>
+    <div id="dayOutput"></div>
+  </div>
+
+  <div id="view-iskanje" class="bb-view">
+    <div class="bb-search-wrap">
+      <span class="bb-search-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" class="bb-search-input" id="searchInput" placeholder="Vpiši ime postajališča (npr. Dornava, Majšperk…)" oninput="doSearch(this.value)">
+    </div>
+    <div id="searchOutput"></div>
+  </div>
+
+  <div class="bb-legend">
+    <div class="bb-legend-title">Legenda</div>
+    <div class="bb-legend-grid">
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#3fa87c"></div>OŠ – osnovna šola</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#c9a84c"></div>GD – gasilski dom</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#ffb464"></div>VRT – vrtec</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#64a0dc"></div>VD – vaški dom</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#b464ff"></div>AP – avtob. postaja</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#ff6478"></div>DU – dom upokojencev</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#a0afc0"></div>TRG – trgovina</div>
+      <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#a0afc0"></div>REST / RP / ZAV</div>
+    </div>
+  </div>
+
+  <div class="bb-footer">
+    📞 051 310 594 &nbsp;·&nbsp; <a href="mailto:storitve@knjiznica-ptuj.si">storitve@knjiznica-ptuj.si</a> &nbsp;·&nbsp; <a href="https://www.knjiznica-ptuj.si" target="_blank">knjiznica-ptuj.si</a>
+  </div>
+
+</div>
+
+<script>
+const SCHEDULE = {
+  "2026-01-05": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-01-06": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-01-07": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-01-08": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-01-12": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-01-13": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-01-14": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-01-15": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-01-19": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-01-20": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-01-21": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-01-22": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-01-26": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-01-27": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-01-28": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-01-29": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-02-02": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-02-03": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-02-04": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-02-05": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-02-09": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-02-10": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-02-11": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-02-12": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-02-16": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-02-17": null,
+  "2026-02-18": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-02-19": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-02-23": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-02-24": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-02-25": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-02-26": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-03-02": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-03-03": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-03-04": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-03-05": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-03-09": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-03-10": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-03-11": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-03-12": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-03-16": [{t:"10:00–11:00",n:"DU Žabjak"},{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-03-17": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-03-18": [{t:"10:00–11:00",n:"DU Ptuj"},{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-03-19": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-03-23": [{t:"10:00–11:00",n:"DU Muretinci"},{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-03-24": [{t:"09:30–10:30",n:"DU Juršinci"},{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-03-25": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-03-26": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-03-30": [{t:"10:00–11:00",n:"DU Kidričevo"},{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-03-31": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-04-01": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-04-02": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-04-06": null,
+  "2026-04-07": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-04-08": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-04-09": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-04-10": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-04-13": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-04-14": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-04-15": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-04-16": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-04-20": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-04-21": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-04-22": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-04-23": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-04-27": null,
+  "2026-04-28": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-04-29": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-04-30": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-05-04": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-05-05": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-05-06": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-05-07": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-05-11": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-05-12": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-05-13": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-05-14": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-05-18": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-05-19": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-05-20": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-05-21": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-05-25": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-05-26": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-05-27": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-05-28": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-06-01": [{t:"10:00–11:00",n:"DU Kidričevo"},{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-06-02": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-06-03": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-06-04": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-06-08": [{t:"10:00–11:00",n:"DU Žabjak"},{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-06-09": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-06-10": [{t:"10:00–11:00",n:"DU Ptuj"},{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-06-11": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-06-15": [{t:"10:00–11:00",n:"DU Muretinci"},{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-06-16": [{t:"09:30–10:30",n:"DU Juršinci"},{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-06-17": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-06-18": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-09-01": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-09-02": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-09-03": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-09-07": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-09-08": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-09-09": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-09-10": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-09-14": [{t:"10:00–11:00",n:"DU Muretinci"},{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-09-15": [{t:"09:30–10:30",n:"DU Juršinci"},{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-09-16": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-09-17": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-09-21": [{t:"10:00–11:00",n:"DU Kidričevo"},{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-09-22": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-09-23": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-09-24": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-09-28": [{t:"10:00–11:00",n:"DU Žabjak"},{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-09-29": [{t:"09:30–10:30",n:"DU Juršinci"},{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-09-30": [{t:"10:00–11:00",n:"DU Ptuj"},{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-10-01": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-10-05": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-10-06": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-10-07": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-10-08": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-10-12": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-10-13": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-10-14": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-10-15": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-10-19": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-10-20": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-10-21": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-10-22": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-10-26": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-10-27": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-10-28": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-10-29": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-11-02": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-11-03": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-11-04": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-11-05": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-11-09": [{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-11-10": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-11-11": [{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-11-12": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-11-16": [{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-11-17": [{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-11-18": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-11-19": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-11-23": [{t:"10:00–11:00",n:"DU Kidričevo"},{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-11-24": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-11-25": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-11-26": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}],
+  "2026-11-30": [{t:"10:00–11:00",n:"DU Žabjak"},{t:"12:00–13:00",n:"Cirkulane OŠ"},{t:"14:00–15:30",n:"Gorišnica VRT"},{t:"16:00–16:30",n:"Zamušani GD"},{t:"17:00–17:30",n:"Moškanjci GD"}],
+  "2026-12-01": [{t:"10:15–11:00",n:"Ptujska Gora RP"},{t:"12:00–13:00",n:"Stoperce OŠ"},{t:"13:30–14:00",n:"Breg AP"},{t:"14:30–15:30",n:"Majšperk GD"},{t:"16:00–16:30",n:"Ptujska Gora GD"},{t:"17:00–17:30",n:"Sestrže VD"}],
+  "2026-12-02": [{t:"10:00–11:00",n:"DU Ptuj"},{t:"12:00–13:00",n:"Hajdina OŠ"},{t:"14:30–15:00",n:"Hajdoše GD"},{t:"15:15–15:45",n:"Slovenja vas GD"},{t:"16:00–16:30",n:"Gerečja vas GD"}],
+  "2026-12-03": [{t:"08:45–09:45",n:"Lovrenc OŠ"},{t:"10:00–10:30",n:"Pleterje TRG"},{t:"11:15–11:45",n:"Cirkovce AP"},{t:"12:00–13:15",n:"Cirkovce OŠ"}],
+  "2026-12-07": [{t:"10:00–11:00",n:"DU Muretinci"},{t:"12:00–13:00",n:"Markovci OŠ"},{t:"13:10–13:40",n:"Bukovci GD"},{t:"14:00–15:00",n:"Stojnci VD"},{t:"15:30–16:00",n:"Sobetinci GD"},{t:"16:30–17:00",n:"Borovci GD"}],
+  "2026-12-08": [{t:"09:30–11:00",n:"DU Juršinci"},{t:"08:30–09:30",n:"Juršinci OŠ"},{t:"10:30–11:00",n:"Polenšak VD"},{t:"11:30–12:30",n:"Dornava OŠ"},{t:"12:40–13:40",n:"Dornava ZAV"}],
+  "2026-12-09": [{t:"08:30–10:00",n:"Videm OŠ"},{t:"10:30–11:45",n:"Leskovec OŠ"},{t:"12:15–12:45",n:"Turnišče GD"},{t:"13:00–13:30",n:"Sela OŠ"},{t:"13:40–14:10",n:"Draženci GD"}],
+  "2026-12-10": [{t:"08:00–09:30",n:"Vitomarci OŠ"},{t:"10:30–12:00",n:"Trnovska vas OŠ"},{t:"12:15–12:40",n:"Destrnik GD"},{t:"12:45–13:25",n:"Destrnik OŠ"},{t:"13:30–14:00",n:"Destrnik VRT"}],
+  "2026-12-14": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
+  "2026-12-15": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
+  "2026-12-16": [{t:"08:30–09:00",n:"Dobrina AP"},{t:"09:30–11:30",n:"Žetale OŠ"},{t:"12:00–14:00",n:"Podlehnik OŠ"}],
+  "2026-12-17": [{t:"08:30–09:00",n:"Lancova vas VD"},{t:"09:10–10:00",n:"Videm VRT"},{t:"11:30–12:00",n:"Gorišnica OŠ"},{t:"12:15–12:45",n:"Formin GD"},{t:"13:00–13:30",n:"Budina-Brstje VRT"}]
+};
+
+const HOLIDAYS = {
+  "2026-01-01":"Novo leto – praznik",
+  "2026-02-17":"Pustni torek – ne vozimo",
+  "2026-04-06":"Velikonočni ponedeljek – praznik",
+  "2026-04-27":"Dan upora proti okupatorju – praznik"
+};
+
+const DAYS = ["nedelja","ponedeljek","torek","sreda","četrtek","petek","sobota"];
+const MONTHS = ["januar","februar","marec","april","maj","junij","julij","avgust","september","oktober","november","december"];
+
+function pad(n){ return String(n).padStart(2,'0'); }
+function toKey(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function parseKey(k){ const p=k.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+function formatSL(d){ return DAYS[d.getDay()]+', '+d.getDate()+'. '+MONTHS[d.getMonth()]+' '+d.getFullYear(); }
+
+function getIcon(name){
+  if(name.includes('OŠ')) return {e:'🏫',c:'icon-os'};
+  if(name.includes('VRT')) return {e:'🌸',c:'icon-vrt'};
+  if(name.includes('GD')) return {e:'🔥',c:'icon-gd'};
+  if(name.includes('VD')) return {e:'🏘️',c:'icon-vd'};
+  if(name.includes('AP')) return {e:'🚏',c:'icon-ap'};
+  if(name.includes('DU')) return {e:'❤️',c:'icon-du'};
+  return {e:'📍',c:'icon-other'};
+}
+
+let cur = new Date(2026,4,21);
+
+function renderDay(d){
+  const key = toKey(d);
+  const el = document.getElementById('dayOutput');
+  const stops = SCHEDULE[key];
+  const holiday = HOLIDAYS[key];
+  const dow = d.getDay();
+
+  let html = '<div class="bb-day-card"><div class="bb-day-header"><div class="bb-day-label">Izbrani datum</div><div class="bb-day-name">'+formatSL(d)+'</div></div>';
+
+  if(holiday){
+    html += '<div class="bb-holiday"><div class="bb-holiday-icon">🗓️</div><div class="bb-holiday-text">'+holiday+'</div></div></div>';
+  } else if(dow===0||dow===6){
+    html += '<div class="bb-no-service"><div class="no-icon">🌙</div><p>Vikend – bibliobus ne vozi</p></div></div>';
+  } else if(!stops){
+    html += '<div class="bb-no-service"><div class="no-icon">📅</div><p>Ta dan bibliobus ne obiskuje postajališč</p></div></div>';
+  } else {
+    const sorted = [...stops].sort((a,b)=>a.t.localeCompare(b.t));
+    html += '<div class="bb-stops">';
+    for(const s of sorted){
+      const ic = getIcon(s.n);
+      const parts = s.n.split(' ');
+      const type = parts[parts.length-1];
+      const place = parts.slice(0,-1).join(' ');
+      html += '<div class="bb-stop"><div class="bb-stop-icon '+ic.c+'">'+ic.e+'</div><span class="bb-stop-time">'+s.t+'</span><span class="bb-stop-name">'+place+'</span><span class="bb-stop-badge">'+type+'</span></div>';
+    }
+    html += '</div><div class="bb-stop-count"><span class="bb-dot"></span> '+sorted.length+' postajališ'+(sorted.length===1?'če':(sorted.length<5?'ča':'č'))+' ta dan</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+function changeDay(delta){
+  cur = new Date(cur.getTime()+delta*86400000);
+  document.getElementById('datePicker').value = toKey(cur);
+  renderDay(cur);
+}
+
+function onDateChange(v){
+  if(!v) return;
+  const p=v.split('-');
+  cur=new Date(+p[0],+p[1]-1,+p[2]);
+  renderDay(cur);
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.bb-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.bb-view').forEach(v=>v.classList.remove('active'));
+  document.querySelector('[onclick="switchTab(\''+tab+'\')"]').classList.add('active');
+  document.getElementById('view-'+tab).classList.add('active');
+}
+
+function doSearch(q){
+  const el = document.getElementById('searchOutput');
+  q = q.trim().toLowerCase();
+  if(q.length<2){ el.innerHTML=''; return; }
+  const hits=[];
+  for(const [key,stops] of Object.entries(SCHEDULE)){
+    if(!stops) continue;
+    const m=stops.filter(s=>s.n.toLowerCase().includes(q));
+    if(m.length) hits.push({key,stops:m});
+  }
+  hits.sort((a,b)=>a.key.localeCompare(b.key));
+  if(!hits.length){
+    el.innerHTML='<div style="color:#a0afc0;font-size:14px;padding:12px 0;">Ni zadetkov za &ldquo;'+q+'&rdquo;</div>';
+    return;
+  }
+  let html='<div style="font-size:12px;color:#a0afc0;margin-bottom:10px;">'+hits.length+' dni z obiskom</div>';
+  for(const r of hits){
+    const d=parseKey(r.key);
+    html+='<div class="bb-result-group"><div class="bb-result-header">'+formatSL(d)+'</div>';
+    for(const s of r.stops) html+='<div class="bb-result-stop"><span class="bb-result-time">'+s.t+'</span><span>'+s.n+'</span></div>';
+    html+='</div>';
+  }
+  el.innerHTML=html;
+}
+
+document.getElementById('datePicker').value=toKey(cur);
+renderDay(cur);
+</script>
+</body>
+</html>
