@@ -7,404 +7,85 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --navy: #0d1f3c;
-    --navy-mid: #162d52;
-    --navy-light: #1e3d6e;
-    --gold: #c9a84c;
-    --gold-light: #e8c96a;
-    --gold-pale: #f5e9c8;
-    --green: #2e7d5e;
-    --green-light: #3fa87c;
-    --green-pale: #d4f0e4;
-    --white: #ffffff;
-    --off-white: #f4f1eb;
-    --text-muted: #a0afc0;
-    --card-bg: rgba(255,255,255,0.06);
-    --card-border: rgba(201,168,76,0.25);
+    --navy: #0d1f3c; --navy-mid: #162d52; --navy-light: #1e3d6e;
+    --gold: #c9a84c; --gold-light: #e8c96a; --gold-pale: #f5e9c8;
+    --green: #2e7d5e; --green-light: #3fa87c;
+    --white: #ffffff; --text-muted: #a0afc0;
+    --card-bg: rgba(255,255,255,0.06); --card-border: rgba(201,168,76,0.25);
   }
-
-  body {
-    font-family: 'Source Sans 3', sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  .bb-header {
-    background: linear-gradient(160deg, #0a1628 0%, #162d52 60%, #0f2040 100%);
-    border-bottom: 1px solid var(--card-border);
-    padding: 2rem 1.5rem 1.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .bb-header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 240px; height: 240px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .bb-header::after {
-    content: '';
-    position: absolute;
-    bottom: -40px; left: 30%;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(46,125,94,0.10) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .bb-brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 0.5rem;
-  }
-  .bb-icon {
-    width: 52px; height: 52px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
-    flex-shrink: 0;
-    box-shadow: 0 4px 16px rgba(201,168,76,0.3);
-  }
-  .bb-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--white);
-    line-height: 1.1;
-  }
-  .bb-subtitle {
-    font-size: 13px;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-top: 2px;
-  }
-  .bb-tagline {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 6px;
-    font-weight: 300;
-  }
-  .bb-tagline span {
-    color: var(--gold-light);
-    font-weight: 500;
-  }
-
-  /* ── MAIN ── */
-  .bb-main {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 1.5rem;
-  }
-
-  /* ── TABS ── */
-  .bb-tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 1.5rem;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    padding: 4px;
-    border: 1px solid var(--card-border);
-  }
-  .bb-tab {
-    flex: 1;
-    padding: 9px 12px;
-    font-size: 14px;
-    font-family: 'Source Sans 3', sans-serif;
-    color: var(--text-muted);
-    cursor: pointer;
-    border-radius: 9px;
-    border: none;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    transition: all 0.2s;
-    font-weight: 400;
-  }
-  .bb-tab:hover { color: var(--white); }
-  .bb-tab.active {
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    color: var(--navy);
-    font-weight: 600;
-    box-shadow: 0 2px 12px rgba(201,168,76,0.3);
-  }
-  .bb-tab svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-  /* ── VIEWS ── */
-  .bb-view { display: none; }
-  .bb-view.active { display: block; }
-
-  /* ── DATE CONTROLS ── */
-  .bb-controls {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 1.25rem;
-    align-items: center;
-  }
-  .bb-nav {
-    padding: 9px 14px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    color: var(--gold-light);
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-  .bb-nav:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
-  .bb-date-input {
-    flex: 1;
-    padding: 9px 14px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    color: var(--white);
-    font-size: 14px;
-    font-family: 'Source Sans 3', sans-serif;
-    outline: none;
-    transition: border-color 0.15s;
-    color-scheme: dark;
-  }
-  .bb-date-input:focus { border-color: var(--gold); }
-
-  /* ── DAY CARD ── */
-  .bb-day-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .bb-day-header {
-    padding: 1rem 1.25rem 0.75rem;
-    border-bottom: 1px solid rgba(201,168,76,0.15);
-    background: rgba(201,168,76,0.06);
-  }
-  .bb-day-label {
-    font-size: 11px;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .bb-day-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    color: var(--white);
-  }
-  .bb-stops {
-    padding: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .bb-stop {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.07);
-    transition: background 0.15s;
-  }
-  .bb-stop:hover { background: rgba(255,255,255,0.08); }
-  .bb-stop-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-    flex-shrink: 0;
-  }
-  .icon-os { background: rgba(63,168,124,0.2); }
-  .icon-gd { background: rgba(201,168,76,0.2); }
-  .icon-vrt { background: rgba(255,180,100,0.2); }
-  .icon-vd { background: rgba(100,160,220,0.2); }
-  .icon-ap { background: rgba(180,100,255,0.2); }
-  .icon-du { background: rgba(255,100,120,0.2); }
-  .icon-other { background: rgba(255,255,255,0.1); }
-  .bb-stop-time {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--gold-light);
-    min-width: 88px;
-    font-variant-numeric: tabular-nums;
-  }
-  .bb-stop-name {
-    flex: 1;
-    font-size: 14px;
-    color: var(--white);
-  }
-  .bb-stop-badge {
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.08);
-    color: var(--text-muted);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .bb-no-service {
-    padding: 2rem 1.25rem;
-    text-align: center;
-    color: var(--text-muted);
-  }
-  .bb-no-service .no-icon { font-size: 32px; margin-bottom: 10px; }
-  .bb-no-service p { font-size: 15px; }
-  .bb-stop-count {
-    padding: 0.5rem 1.25rem 0.75rem;
-    font-size: 12px;
-    color: var(--text-muted);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .bb-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green-light);
-    display: inline-block;
-  }
-
-  /* ── SEARCH ── */
-  .bb-search-wrap {
-    position: relative;
-    margin-bottom: 1.25rem;
-  }
-  .bb-search-icon {
-    position: absolute;
-    left: 12px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 16px;
-    pointer-events: none;
-  }
-  .bb-search-input {
-    width: 100%;
-    padding: 11px 14px 11px 38px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    color: var(--white);
-    font-size: 15px;
-    font-family: 'Source Sans 3', sans-serif;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .bb-search-input::placeholder { color: var(--text-muted); }
-  .bb-search-input:focus { border-color: var(--gold); }
-  .bb-result-group {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    margin-bottom: 8px;
-    overflow: hidden;
-  }
-  .bb-result-header {
-    padding: 10px 14px;
-    background: rgba(201,168,76,0.08);
-    border-bottom: 1px solid rgba(201,168,76,0.15);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--gold-light);
-  }
-  .bb-result-stop {
-    padding: 8px 14px;
-    font-size: 14px;
-    color: var(--white);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    gap: 12px;
-  }
-  .bb-result-stop:last-child { border-bottom: none; }
-  .bb-result-time {
-    color: var(--gold);
-    font-weight: 500;
-    min-width: 90px;
-    font-size: 13px;
-  }
-
-  /* ── LEGEND ── */
-  .bb-legend {
-    margin-top: 1.5rem;
-    padding: 1rem 1.25rem;
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-  }
-  .bb-legend-title {
-    font-size: 11px;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .bb-legend-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 6px;
-  }
-  .bb-legend-item {
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .bb-legend-dot {
-    width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0;
-  }
-
-  /* ── FOOTER ── */
-  .bb-footer {
-    text-align: center;
-    padding: 1.5rem;
-    font-size: 12px;
-    color: var(--text-muted);
-    border-top: 1px solid rgba(255,255,255,0.07);
-    margin-top: 1rem;
-  }
-  .bb-footer a { color: var(--gold); text-decoration: none; }
-  .bb-footer a:hover { text-decoration: underline; }
-
-  /* ── HOLIDAY BADGE ── */
-  .bb-holiday {
-    padding: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(201,168,76,0.08);
-    border-radius: 10px;
-    margin: 0.75rem;
-    border: 1px solid rgba(201,168,76,0.2);
-  }
-  .bb-holiday-icon { font-size: 24px; }
-  .bb-holiday-text { font-size: 14px; color: var(--gold-pale); }
-
-  @media (max-width: 480px) {
-    .bb-title { font-size: 22px; }
-    .bb-stop-time { min-width: 70px; font-size: 12px; }
-    .bb-stop-name { font-size: 13px; }
-  }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--navy); color: var(--white); min-height: 100vh; }
+  .bb-header { background: linear-gradient(160deg, #0a1628 0%, #162d52 60%, #0f2040 100%); border-bottom: 1px solid var(--card-border); padding: 2rem 1.5rem 1.5rem; position: relative; overflow: hidden; }
+  .bb-header::before { content:''; position:absolute; top:-60px; right:-60px; width:240px; height:240px; border-radius:50%; background:radial-gradient(circle,rgba(201,168,76,.12) 0%,transparent 70%); pointer-events:none; }
+  .bb-brand { display:flex; align-items:center; gap:14px; margin-bottom:0.5rem; }
+  .bb-icon { width:52px; height:52px; background:linear-gradient(135deg,var(--gold),var(--gold-light)); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; box-shadow:0 4px 16px rgba(201,168,76,.3); }
+  .bb-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:600; color:var(--white); line-height:1.1; }
+  .bb-subtitle { font-size:13px; color:var(--gold); letter-spacing:.08em; text-transform:uppercase; font-weight:500; margin-top:2px; }
+  .bb-tagline { font-size:13px; color:var(--text-muted); margin-top:6px; font-weight:300; }
+  .bb-tagline span { color:var(--gold-light); font-weight:500; }
+  .bb-main { max-width:700px; margin:0 auto; padding:1.5rem; }
+  .bb-tabs { display:flex; gap:0; margin-bottom:1.5rem; background:rgba(255,255,255,.05); border-radius:12px; padding:4px; border:1px solid var(--card-border); }
+  .bb-tab { flex:1; padding:9px 12px; font-size:14px; font-family:'Source Sans 3',sans-serif; color:var(--text-muted); cursor:pointer; border-radius:9px; border:none; background:transparent; display:flex; align-items:center; justify-content:center; gap:7px; transition:all .2s; font-weight:400; }
+  .bb-tab:hover { color:var(--white); }
+  .bb-tab.active { background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--navy); font-weight:600; box-shadow:0 2px 12px rgba(201,168,76,.3); }
+  .bb-tab svg { width:16px; height:16px; flex-shrink:0; }
+  .bb-view { display:none; }
+  .bb-view.active { display:block; }
+  .bb-controls { display:flex; gap:8px; margin-bottom:1.25rem; align-items:center; }
+  .bb-nav { padding:9px 14px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--gold-light); cursor:pointer; font-size:18px; line-height:1; transition:all .15s; font-family:inherit; }
+  .bb-nav:hover { background:rgba(201,168,76,.15); border-color:var(--gold); }
+  .bb-date-input { flex:1; padding:9px 14px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; color:var(--white); font-size:14px; font-family:'Source Sans 3',sans-serif; outline:none; transition:border-color .15s; color-scheme:dark; }
+  .bb-date-input:focus { border-color:var(--gold); }
+  .bb-day-card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:16px; overflow:hidden; }
+  .bb-day-header { padding:1rem 1.25rem .75rem; border-bottom:1px solid rgba(201,168,76,.15); background:rgba(201,168,76,.06); display:flex; justify-content:space-between; align-items:flex-start; }
+  .bb-day-label { font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:.1em; font-weight:600; margin-bottom:4px; }
+  .bb-day-name { font-family:'Playfair Display',serif; font-size:20px; color:var(--white); }
+  .bb-moon { font-size:28px; line-height:1; }
+  .bb-moon-label { font-size:10px; color:var(--text-muted); text-align:center; margin-top:2px; }
+  .bb-stops { padding:.75rem; display:flex; flex-direction:column; gap:6px; }
+  .bb-stop { display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,.04); border-radius:10px; border:1px solid rgba(255,255,255,.07); cursor:pointer; transition:all .15s; text-decoration:none; color:inherit; }
+  .bb-stop:hover { background:rgba(201,168,76,.1); border-color:rgba(201,168,76,.3); transform:translateX(2px); }
+  .bb-stop-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+  .icon-os { background:rgba(63,168,124,.2); } .icon-gd { background:rgba(201,168,76,.2); }
+  .icon-vrt { background:rgba(255,180,100,.2); } .icon-vd { background:rgba(100,160,220,.2); }
+  .icon-ap { background:rgba(180,100,255,.2); } .icon-du { background:rgba(255,100,120,.2); }
+  .icon-other { background:rgba(255,255,255,.1); }
+  .bb-stop-time { font-size:13px; font-weight:600; color:var(--gold-light); min-width:88px; font-variant-numeric:tabular-nums; }
+  .bb-stop-name { flex:1; font-size:14px; color:var(--white); }
+  .bb-stop-badge { font-size:11px; padding:3px 8px; border-radius:20px; background:rgba(255,255,255,.08); color:var(--text-muted); border:1px solid rgba(255,255,255,.1); }
+  .bb-stop-map { font-size:14px; opacity:.5; flex-shrink:0; }
+  .bb-stop:hover .bb-stop-map { opacity:1; }
+  .bb-no-service { padding:2rem 1.25rem; text-align:center; }
+  .bb-no-service .no-icon { font-size:42px; margin-bottom:10px; }
+  .bb-no-service p { font-size:15px; color:var(--text-muted); }
+  .bb-no-service .moon-info { font-size:13px; color:var(--text-muted); margin-top:8px; opacity:.7; }
+  .bb-stop-count { padding:.5rem 1.25rem .75rem; font-size:12px; color:var(--text-muted); border-top:1px solid rgba(255,255,255,.06); display:flex; align-items:center; gap:6px; }
+  .bb-dot { width:6px; height:6px; border-radius:50%; background:var(--green-light); display:inline-block; }
+  .bb-search-wrap { position:relative; margin-bottom:1.25rem; }
+  .bb-search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none; }
+  .bb-search-input { width:100%; padding:11px 14px 11px 38px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; color:var(--white); font-size:15px; font-family:'Source Sans 3',sans-serif; outline:none; transition:border-color .15s; }
+  .bb-search-input::placeholder { color:var(--text-muted); }
+  .bb-search-input:focus { border-color:var(--gold); }
+  .bb-result-group { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; margin-bottom:8px; overflow:hidden; }
+  .bb-result-header { padding:10px 14px; background:rgba(201,168,76,.08); border-bottom:1px solid rgba(201,168,76,.15); font-size:13px; font-weight:600; color:var(--gold-light); }
+  .bb-result-stop { padding:8px 14px; font-size:14px; color:var(--white); border-bottom:1px solid rgba(255,255,255,.05); display:flex; gap:12px; align-items:center; cursor:pointer; text-decoration:none; transition:background .15s; }
+  .bb-result-stop:last-child { border-bottom:none; }
+  .bb-result-stop:hover { background:rgba(201,168,76,.08); }
+  .bb-result-time { color:var(--gold); font-weight:500; min-width:90px; font-size:13px; }
+  .bb-legend { margin-top:1.5rem; padding:1rem 1.25rem; background:var(--card-bg); border:1px solid rgba(255,255,255,.07); border-radius:12px; }
+  .bb-legend-title { font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:.08em; font-weight:600; margin-bottom:10px; }
+  .bb-legend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:6px; }
+  .bb-legend-item { font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:6px; }
+  .bb-legend-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+  .bb-footer { text-align:center; padding:1.5rem; font-size:12px; color:var(--text-muted); border-top:1px solid rgba(255,255,255,.07); margin-top:1rem; }
+  .bb-footer a { color:var(--gold); text-decoration:none; }
+  .bb-footer a:hover { text-decoration:underline; }
+  .bb-holiday { padding:1.25rem; display:flex; align-items:center; gap:12px; background:rgba(201,168,76,.08); border-radius:10px; margin:.75rem; border:1px solid rgba(201,168,76,.2); }
+  .bb-holiday-text { font-size:14px; color:var(--gold-pale); }
+  @media(max-width:480px){ .bb-title{font-size:22px;} .bb-stop-time{min-width:70px;font-size:12px;} .bb-stop-name{font-size:13px;} }
 </style>
 </head>
 <body>
-
 <div class="bb-header">
   <div style="max-width:700px;margin:0 auto;">
     <div class="bb-brand">
@@ -417,9 +98,7 @@
     <div class="bb-tagline">Potujoča knjižnica · <span>56 postajališč v 16 občinah</span> · 2026</div>
   </div>
 </div>
-
 <div class="bb-main">
-
   <div class="bb-tabs">
     <button class="bb-tab active" onclick="switchTab('danes')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -430,16 +109,14 @@
       Poišči postajališče
     </button>
   </div>
-
   <div id="view-danes" class="bb-view active">
     <div class="bb-controls">
-      <button class="bb-nav" onclick="changeDay(-1)" title="Prejšnji dan">&#8249;</button>
+      <button class="bb-nav" onclick="changeDay(-1)">&#8249;</button>
       <input type="date" class="bb-date-input" id="datePicker" onchange="onDateChange(this.value)" min="2026-01-01" max="2026-12-31">
-      <button class="bb-nav" onclick="changeDay(1)" title="Naslednji dan">&#8250;</button>
+      <button class="bb-nav" onclick="changeDay(1)">&#8250;</button>
     </div>
     <div id="dayOutput"></div>
   </div>
-
   <div id="view-iskanje" class="bb-view">
     <div class="bb-search-wrap">
       <span class="bb-search-icon">
@@ -449,9 +126,8 @@
     </div>
     <div id="searchOutput"></div>
   </div>
-
   <div class="bb-legend">
-    <div class="bb-legend-title">Legenda</div>
+    <div class="bb-legend-title">Legenda · klikni na postajališče za Google Maps</div>
     <div class="bb-legend-grid">
       <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#3fa87c"></div>OŠ – osnovna šola</div>
       <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#c9a84c"></div>GD – gasilski dom</div>
@@ -463,14 +139,125 @@
       <div class="bb-legend-item"><div class="bb-legend-dot" style="background:#a0afc0"></div>REST / RP / ZAV</div>
     </div>
   </div>
-
   <div class="bb-footer">
     📞 051 310 594 &nbsp;·&nbsp; <a href="mailto:storitve@knjiznica-ptuj.si">storitve@knjiznica-ptuj.si</a> &nbsp;·&nbsp; <a href="https://www.knjiznica-ptuj.si" target="_blank">knjiznica-ptuj.si</a>
   </div>
-
 </div>
-
 <script>
+// ── KOORDINATE postajališč ──
+const COORDS = {
+  "Apače TRG":      [46.3758548, 15.8003062],
+  "Borovci GD":     [46.4173849, 15.9425824],
+  "Breg AP":        [46.41623,   15.8544271],
+  "Budina-Brstje VRT": [46.3947247, 15.7227077], // Cirkovce AP approx
+  "Bukovci GD":     [46.3866788, 15.9603764],
+  "Cirkovce AP":    [46.394844,  15.723058],
+  "Cirkovce OŠ":    [46.3947247, 15.7227077],
+  "Cirkulane OŠ":   [46.3436373, 15.9942649],
+  "Destrnik GD":    [46.4929574, 15.8756792],
+  "Destrnik OŠ":    [46.4892993, 15.8758692],
+  "Destrnik VRT":   [46.4884599, 15.8774212],
+  "Dobrina AP":     [46.3290,    15.8810],
+  "Dornava OŠ":     [46.4340795, 15.950237],
+  "Dornava ZAV":    [46.4318941, 15.946188],
+  "Draženci GD":    [46.3889258, 15.8439116],
+  "Formin GD":      [46.4046128, 16.0373018],
+  "Gerečja vas GD": [46.4288555, 15.8073558],
+  "Gorišnica VRT":  [46.4082094, 16.0140034],
+  "Gorišnica OŠ":   [46.4081794, 16.013879],
+  "Grajena OŠ":     [46.4586981, 15.8406319],
+  "Hajdina OŠ":     [46.4163532, 15.8345764],
+  "Hajdoše GD":     [46.4271761, 15.8274582],
+  "Juršinci OŠ":    [46.4860084, 15.972282],
+  "Kidričevo VRT":  [46.4076782, 15.7934234],
+  "Kidričevo REST": [46.4039306, 15.797841],
+  "Kungota VD":     [46.4234798, 15.7891515],
+  "Lancova vas VD": [46.4234798, 15.7891515],
+  "Leskovec OŠ":    [46.3275944, 15.9347497],
+  "Lovrenc OŠ":     [46.3733793, 15.7748822],
+  "Majšperk GD":    [46.3412934, 15.7368383],
+  "Markovci OŠ":    [46.3952162, 15.9323034],
+  "Moškanjci GD":   [46.4176211, 15.9952992],
+  "Nova vas GD":    [46.3839171, 15.9372789],
+  "Pleterje TRG":   [46.3695625, 15.902217],
+  "Podlehnik OŠ":   [46.3357092, 15.8805657],
+  "Polenšak VD":    [46.4665592, 16.0028349],
+  "Ptujska Gora RP":[46.3557987, 15.760899],
+  "Ptujska Gora GD":[46.3514643, 15.7595196],
+  "Sela OŠ":        [46.3695625, 15.902217],
+  "Sestrže VD":     [46.3563788, 15.6895413],
+  "Slovenja vas GD":[46.4418277, 15.8126985],
+  "Sobetinci GD":   [46.4021966, 15.9714727],
+  "Starošince GD":  [46.4232618, 15.7315479],
+  "Stojnci VD":     [46.3795633, 15.9786421],
+  "Stoperce OŠ":    [46.2894438, 15.7162525],
+  "Šikole TRG":     [46.403608,  15.7006216],
+  "Trnovska vas OŠ":[46.4892993, 15.8758692],
+  "Turnišče GD":    [46.399186,  15.8612668],
+  "Videm OŠ":       [46.3695625, 15.902217],
+  "Videm VRT":      [46.3695625, 15.905],
+  "Vitomarci OŠ":   [46.5226963, 15.9364385],
+  "Zavrč OŠ":       [46.385640,  16.0456261],
+  "Zavrč TRG":      [46.3780372, 16.0545602],
+  "Zamušani GD":    [46.4225511, 16.0331033],
+  "Žetale OŠ":      [46.2733058, 15.7894958],
+  "DU Juršinci":    [46.4869776, 15.9707321],
+  "DU Kidričevo":   [46.403532,  15.794735],
+  "DU Muretinci":   [46.3846103, 15.9972743],
+  "DU Ptuj":        [46.42458,   15.8738757],
+  "DU Žabjak":      [46.43346,   15.8943991],
+};
+
+function mapsUrl(name) {
+  const c = COORDS[name];
+  if (!c) return null;
+  const q = encodeURIComponent(name + ' Slovenija');
+  return `https://www.google.com/maps/search/?api=1&query=${c[0]},${c[1]}`;
+}
+
+// ── LUNINE MENE 2026 (dejanski astronomski podatki) ──
+// Format: [mesec-1, dan] = nova luna datumi + izračun faz
+// Referenca: nova luna 1.1.2026 = 1. januar
+const NEW_MOONS_2026 = [
+  new Date(2026,0,1),   // 1. jan
+  new Date(2026,0,31),  // 31. jan
+  new Date(2026,1,28), // 28. feb  (sklepamo iz cikla ~29.5 dni)
+  new Date(2026,2,30), // 30. mar
+  new Date(2026,3,28), // 28. apr
+  new Date(2026,4,28), // 28. maj
+  new Date(2026,5,26), // 26. jun
+  new Date(2026,6,26), // 26. jul
+  new Date(2026,7,24), // 24. avg
+  new Date(2026,8,23), // 23. sep
+  new Date(2026,9,22), // 22. okt
+  new Date(2026,10,21),// 21. nov
+  new Date(2026,11,20),// 20. dec
+];
+
+function getMoonPhase(date) {
+  // Poišči najbližjo novo luno pred ali na ta datum
+  const ms = date.getTime();
+  let ref = NEW_MOONS_2026[0];
+  for (const nm of NEW_MOONS_2026) {
+    if (nm.getTime() <= ms) ref = nm;
+    else break;
+  }
+  const daysSince = (ms - ref.getTime()) / (1000*60*60*24);
+  const cycle = 29.53058770576;
+  const phase = (daysSince % cycle) / cycle; // 0..1
+
+  // 8 faz
+  if (phase < 0.0625 || phase >= 0.9375) return { emoji: '🌑', name: 'Nova luna' };
+  if (phase < 0.1875) return { emoji: '🌒', name: 'Mlaj (raste)' };
+  if (phase < 0.3125) return { emoji: '🌓', name: 'Prva četrtina' };
+  if (phase < 0.4375) return { emoji: '🌔', name: 'Rastoča luna' };
+  if (phase < 0.5625) return { emoji: '🌕', name: 'Polna luna' };
+  if (phase < 0.6875) return { emoji: '🌖', name: 'Pojemajoča luna' };
+  if (phase < 0.8125) return { emoji: '🌗', name: 'Zadnja četrtina' };
+  return { emoji: '🌘', name: 'Mlaj (pojema)' };
+}
+
+// ── URNIK ──
 const SCHEDULE = {
   "2026-01-05": [{t:"11:45–12:15",n:"Kidričevo VRT"},{t:"12:30–13:00",n:"Kidričevo REST"},{t:"14:00–14:30",n:"Apače TRG"},{t:"15:00–15:30",n:"Kungota VD"},{t:"16:00–16:30",n:"Starošince GD"},{t:"16:45–17:15",n:"Šikole TRG"}],
   "2026-01-06": [{t:"08:30–09:30",n:"Grajena OŠ"},{t:"11:00–12:00",n:"Zavrč OŠ"},{t:"12:10–12:40",n:"Zavrč TRG"},{t:"13:10–13:40",n:"Nova vas GD"}],
@@ -641,96 +428,100 @@ const HOLIDAYS = {
   "2026-04-27":"Dan upora proti okupatorju – praznik"
 };
 
-const DAYS = ["nedelja","ponedeljek","torek","sreda","četrtek","petek","sobota"];
-const MONTHS = ["januar","februar","marec","april","maj","junij","julij","avgust","september","oktober","november","december"];
-
-function pad(n){ return String(n).padStart(2,'0'); }
-function toKey(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-function parseKey(k){ const p=k.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
-function formatSL(d){ return DAYS[d.getDay()]+', '+d.getDate()+'. '+MONTHS[d.getMonth()]+' '+d.getFullYear(); }
+const DAYS=["nedelja","ponedeljek","torek","sreda","četrtek","petek","sobota"];
+const MONTHS=["januar","februar","marec","april","maj","junij","julij","avgust","september","oktober","november","december"];
+function pad(n){return String(n).padStart(2,'0');}
+function toKey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function parseKey(k){const p=k.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function formatSL(d){return DAYS[d.getDay()]+', '+d.getDate()+'. '+MONTHS[d.getMonth()]+' '+d.getFullYear();}
 
 function getIcon(name){
-  if(name.includes('OŠ')) return {e:'🏫',c:'icon-os'};
-  if(name.includes('VRT')) return {e:'🌸',c:'icon-vrt'};
-  if(name.includes('GD')) return {e:'🔥',c:'icon-gd'};
-  if(name.includes('VD')) return {e:'🏘️',c:'icon-vd'};
-  if(name.includes('AP')) return {e:'🚏',c:'icon-ap'};
-  if(name.includes('DU')) return {e:'❤️',c:'icon-du'};
-  return {e:'📍',c:'icon-other'};
+  if(name.includes('OŠ'))return{e:'🏫',c:'icon-os'};
+  if(name.includes('VRT'))return{e:'🌸',c:'icon-vrt'};
+  if(name.includes('GD'))return{e:'🔥',c:'icon-gd'};
+  if(name.includes('VD'))return{e:'🏘️',c:'icon-vd'};
+  if(name.includes('AP'))return{e:'🚏',c:'icon-ap'};
+  if(name.includes('DU'))return{e:'❤️',c:'icon-du'};
+  return{e:'📍',c:'icon-other'};
 }
 
-let cur = new Date(2026,4,21);
+// Privzeto: današnji datum (če je zunaj 2026, pokaži 1. jan 2026)
+let _today=new Date();
+let cur=(_today.getFullYear()===2026)?_today:new Date(2026,0,5);
 
 function renderDay(d){
-  const key = toKey(d);
-  const el = document.getElementById('dayOutput');
-  const stops = SCHEDULE[key];
-  const holiday = HOLIDAYS[key];
-  const dow = d.getDay();
+  const key=toKey(d);
+  const el=document.getElementById('dayOutput');
+  const stops=SCHEDULE[key];
+  const holiday=HOLIDAYS[key];
+  const dow=d.getDay();
+  const moon=getMoonPhase(d);
 
-  let html = '<div class="bb-day-card"><div class="bb-day-header"><div class="bb-day-label">Izbrani datum</div><div class="bb-day-name">'+formatSL(d)+'</div></div>';
+  let html='<div class="bb-day-card"><div class="bb-day-header"><div><div class="bb-day-label">Izbrani datum</div><div class="bb-day-name">'+formatSL(d)+'</div></div><div style="text-align:center"><div class="bb-moon">'+moon.emoji+'</div><div class="bb-moon-label">'+moon.name+'</div></div></div>';
 
   if(holiday){
-    html += '<div class="bb-holiday"><div class="bb-holiday-icon">🗓️</div><div class="bb-holiday-text">'+holiday+'</div></div></div>';
+    html+='<div class="bb-holiday"><div style="font-size:28px">🗓️</div><div class="bb-holiday-text">'+holiday+'</div></div></div>';
   } else if(dow===0||dow===6){
-    html += '<div class="bb-no-service"><div class="no-icon">🌙</div><p>Vikend – bibliobus ne vozi</p></div></div>';
+    html+='<div class="bb-no-service"><div class="no-icon">'+moon.emoji+'</div><p>Vikend – bibliobus ne vozi</p><div class="moon-info">'+moon.name+'</div></div></div>';
   } else if(!stops){
-    html += '<div class="bb-no-service"><div class="no-icon">📅</div><p>Ta dan bibliobus ne obiskuje postajališč</p></div></div>';
+    html+='<div class="bb-no-service"><div class="no-icon">'+moon.emoji+'</div><p>Ta dan bibliobus ne obiskuje postajališč</p><div class="moon-info">'+moon.name+'</div></div></div>';
   } else {
-    const sorted = [...stops].sort((a,b)=>a.t.localeCompare(b.t));
-    html += '<div class="bb-stops">';
+    const sorted=[...stops].sort((a,b)=>a.t.localeCompare(b.t));
+    html+='<div class="bb-stops">';
     for(const s of sorted){
-      const ic = getIcon(s.n);
-      const parts = s.n.split(' ');
-      const type = parts[parts.length-1];
-      const place = parts.slice(0,-1).join(' ');
-      html += '<div class="bb-stop"><div class="bb-stop-icon '+ic.c+'">'+ic.e+'</div><span class="bb-stop-time">'+s.t+'</span><span class="bb-stop-name">'+place+'</span><span class="bb-stop-badge">'+type+'</span></div>';
+      const ic=getIcon(s.n);
+      const parts=s.n.split(' ');
+      const type=parts[parts.length-1];
+      const place=parts.slice(0,-1).join(' ');
+      const url=mapsUrl(s.n);
+      const tag=url?'a href="'+url+'" target="_blank"':'div';
+      const close=url?'a':'div';
+      html+='<'+tag+' class="bb-stop"><div class="bb-stop-icon '+ic.c+'">'+ic.e+'</div><span class="bb-stop-time">'+s.t+'</span><span class="bb-stop-name">'+place+'</span><span class="bb-stop-badge">'+type+'</span>'+(url?'<span class="bb-stop-map">📍</span>':'')+'</'+close+'>';
     }
-    html += '</div><div class="bb-stop-count"><span class="bb-dot"></span> '+sorted.length+' postajališ'+(sorted.length===1?'če':(sorted.length<5?'ča':'č'))+' ta dan</div></div>';
+    html+='</div><div class="bb-stop-count"><span class="bb-dot"></span> '+sorted.length+' postajališ'+(sorted.length===1?'če':(sorted.length<5?'ča':'č'))+' ta dan</div></div>';
   }
-  el.innerHTML = html;
+  el.innerHTML=html;
 }
 
 function changeDay(delta){
-  cur = new Date(cur.getTime()+delta*86400000);
-  document.getElementById('datePicker').value = toKey(cur);
+  cur=new Date(cur.getTime()+delta*86400000);
+  document.getElementById('datePicker').value=toKey(cur);
   renderDay(cur);
 }
-
 function onDateChange(v){
-  if(!v) return;
+  if(!v)return;
   const p=v.split('-');
   cur=new Date(+p[0],+p[1]-1,+p[2]);
   renderDay(cur);
 }
-
 function switchTab(tab){
   document.querySelectorAll('.bb-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.bb-view').forEach(v=>v.classList.remove('active'));
   document.querySelector('[onclick="switchTab(\''+tab+'\')"]').classList.add('active');
   document.getElementById('view-'+tab).classList.add('active');
 }
-
 function doSearch(q){
-  const el = document.getElementById('searchOutput');
-  q = q.trim().toLowerCase();
-  if(q.length<2){ el.innerHTML=''; return; }
+  const el=document.getElementById('searchOutput');
+  q=q.trim().toLowerCase();
+  if(q.length<2){el.innerHTML='';return;}
   const hits=[];
-  for(const [key,stops] of Object.entries(SCHEDULE)){
-    if(!stops) continue;
+  for(const[key,stops]of Object.entries(SCHEDULE)){
+    if(!stops)continue;
     const m=stops.filter(s=>s.n.toLowerCase().includes(q));
-    if(m.length) hits.push({key,stops:m});
+    if(m.length)hits.push({key,stops:m});
   }
   hits.sort((a,b)=>a.key.localeCompare(b.key));
-  if(!hits.length){
-    el.innerHTML='<div style="color:#a0afc0;font-size:14px;padding:12px 0;">Ni zadetkov za &ldquo;'+q+'&rdquo;</div>';
-    return;
-  }
+  if(!hits.length){el.innerHTML='<div style="color:#a0afc0;font-size:14px;padding:12px 0;">Ni zadetkov za &ldquo;'+q+'&rdquo;</div>';return;}
   let html='<div style="font-size:12px;color:#a0afc0;margin-bottom:10px;">'+hits.length+' dni z obiskom</div>';
   for(const r of hits){
     const d=parseKey(r.key);
     html+='<div class="bb-result-group"><div class="bb-result-header">'+formatSL(d)+'</div>';
-    for(const s of r.stops) html+='<div class="bb-result-stop"><span class="bb-result-time">'+s.t+'</span><span>'+s.n+'</span></div>';
+    for(const s of r.stops){
+      const url=mapsUrl(s.n);
+      const tag=url?'a href="'+url+'" target="_blank"':'div';
+      const close=url?'a':'div';
+      html+='<'+tag+' class="bb-result-stop"><span class="bb-result-time">'+s.t+'</span><span style="flex:1">'+s.n+'</span>'+(url?'<span style="opacity:.5">📍</span>':'')+'</'+close+'>';
+    }
     html+='</div>';
   }
   el.innerHTML=html;
