@@ -2,8 +2,23 @@
 <html lang="sl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Bibliobus – Razpored obiskov 2026</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d1f3c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bibliobus">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+<!-- SEO / deljenje -->
+<meta name="description" content="Razpored obiskov bibliobusa Knjižnice Ivana Potrča Ptuj 2026 – 56 postajališč v 16 občinah">
+<meta property="og:title" content="Bibliobus – Razpored obiskov 2026">
+<meta property="og:description" content="Poišči kdaj pride bibliobus k tebi">
+<meta property="og:image" content="icon-512.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -529,6 +544,15 @@ function doSearch(q){
 
 document.getElementById('datePicker').value=toKey(cur);
 renderDay(cur);
+
+// ── PWA: registracija service workerja ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('Bibliobus SW registered'))
+      .catch(e => console.log('SW error:', e));
+  });
+}
 </script>
 </body>
 </html>

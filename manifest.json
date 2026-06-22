@@ -1,0 +1,43 @@
+{
+  "name": "Bibliobus – Knjižnica Ptuj",
+  "short_name": "Bibliobus",
+  "description": "Razpored obiskov bibliobusa Knjižnice Ivana Potrča Ptuj 2026",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d1f3c",
+  "theme_color": "#0d1f3c",
+  "orientation": "portrait-primary",
+  "lang": "sl",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "books",
+    "education"
+  ],
+  "shortcuts": [
+    {
+      "name": "Danes",
+      "short_name": "Danes",
+      "description": "Poglej kje je bibliobus danes",
+      "url": "./?tab=danes",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
