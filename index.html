@@ -233,35 +233,90 @@ function mapsUrl(name) {
 // ── LUNINE MENE 2026 (dejanski astronomski podatki) ──
 // Format: [mesec-1, dan] = nova luna datumi + izračun faz
 // Referenca: nova luna 1.1.2026 = 1. januar
-const NEW_MOONS_2026 = [
-  new Date(2026,0,1),   // 1. jan
-  new Date(2026,0,31),  // 31. jan
-  new Date(2026,1,28), // 28. feb  (sklepamo iz cikla ~29.5 dni)
-  new Date(2026,2,30), // 30. mar
-  new Date(2026,3,28), // 28. apr
-  new Date(2026,4,28), // 28. maj
-  new Date(2026,5,26), // 26. jun
-  new Date(2026,6,26), // 26. jul
-  new Date(2026,7,24), // 24. avg
-  new Date(2026,8,23), // 23. sep
-  new Date(2026,9,22), // 22. okt
-  new Date(2026,10,21),// 21. nov
-  new Date(2026,11,20),// 20. dec
+// Točni datumi luninih faz 2026 (vir: NASA / J. Meeus Astronomical Algorithms)
+// Format: [datum, faza] kjer je faza: 0=nova, 0.25=prvi krajec, 0.5=polna, 0.75=zadnji krajec
+const MOON_PHASES_2026 = [
+  { d: new Date(2026,0,3),  p: 0.5  }, // 3.1. polna luna
+  { d: new Date(2026,0,10), p: 0.75 }, // 10.1. zadnji krajec
+  { d: new Date(2026,0,18), p: 0.0  }, // 18.1. nova luna
+  { d: new Date(2026,0,26), p: 0.25 }, // 26.1. prvi krajec
+  { d: new Date(2026,1,1),  p: 0.5  }, // 1.2. polna luna
+  { d: new Date(2026,1,9),  p: 0.75 }, // 9.2. zadnji krajec
+  { d: new Date(2026,1,17), p: 0.0  }, // 17.2. nova luna
+  { d: new Date(2026,1,24), p: 0.25 }, // 24.2. prvi krajec
+  { d: new Date(2026,2,3),  p: 0.5  }, // 3.3. polna luna
+  { d: new Date(2026,2,11), p: 0.75 }, // 11.3. zadnji krajec
+  { d: new Date(2026,2,19), p: 0.0  }, // 19.3. nova luna
+  { d: new Date(2026,2,25), p: 0.25 }, // 25.3. prvi krajec
+  { d: new Date(2026,3,2),  p: 0.5  }, // 2.4. polna luna
+  { d: new Date(2026,3,10), p: 0.75 }, // 10.4. zadnji krajec
+  { d: new Date(2026,3,17), p: 0.0  }, // 17.4. nova luna
+  { d: new Date(2026,3,24), p: 0.25 }, // 24.4. prvi krajec
+  { d: new Date(2026,4,1),  p: 0.5  }, // 1.5. polna luna
+  { d: new Date(2026,4,9),  p: 0.75 }, // 9.5. zadnji krajec
+  { d: new Date(2026,4,16), p: 0.0  }, // 16.5. nova luna
+  { d: new Date(2026,4,23), p: 0.25 }, // 23.5. prvi krajec
+  { d: new Date(2026,4,31), p: 0.5  }, // 31.5. polna luna (modra luna!)
+  { d: new Date(2026,5,8),  p: 0.75 }, // 8.6. zadnji krajec
+  { d: new Date(2026,5,15), p: 0.0  }, // 15.6. nova luna
+  { d: new Date(2026,5,21), p: 0.25 }, // 21.6. prvi krajec
+  { d: new Date(2026,5,30), p: 0.5  }, // 30.6. polna luna
+  { d: new Date(2026,6,7),  p: 0.75 }, // 7.7. zadnji krajec
+  { d: new Date(2026,6,14), p: 0.0  }, // 14.7. nova luna
+  { d: new Date(2026,6,21), p: 0.25 }, // 21.7. prvi krajec
+  { d: new Date(2026,6,29), p: 0.5  }, // 29.7. polna luna
+  { d: new Date(2026,7,6),  p: 0.75 }, // 6.8. zadnji krajec
+  { d: new Date(2026,7,12), p: 0.0  }, // 12.8. nova luna
+  { d: new Date(2026,7,20), p: 0.25 }, // 20.8. prvi krajec
+  { d: new Date(2026,7,28), p: 0.5  }, // 28.8. polna luna
+  { d: new Date(2026,8,4),  p: 0.75 }, // 4.9. zadnji krajec
+  { d: new Date(2026,8,11), p: 0.0  }, // 11.9. nova luna
+  { d: new Date(2026,8,18), p: 0.25 }, // 18.9. prvi krajec
+  { d: new Date(2026,8,26), p: 0.5  }, // 26.9. polna luna
+  { d: new Date(2026,9,3),  p: 0.75 }, // 3.10. zadnji krajec
+  { d: new Date(2026,9,10), p: 0.0  }, // 10.10. nova luna
+  { d: new Date(2026,9,18), p: 0.25 }, // 18.10. prvi krajec
+  { d: new Date(2026,9,26), p: 0.5  }, // 26.10. polna luna
+  { d: new Date(2026,10,1), p: 0.75 }, // 1.11. zadnji krajec
+  { d: new Date(2026,10,9), p: 0.0  }, // 9.11. nova luna
+  { d: new Date(2026,10,17),p: 0.25 }, // 17.11. prvi krajec
+  { d: new Date(2026,10,24),p: 0.5  }, // 24.11. polna luna
+  { d: new Date(2026,11,1), p: 0.75 }, // 1.12. zadnji krajec
+  { d: new Date(2026,11,9), p: 0.0  }, // 9.12. nova luna
+  { d: new Date(2026,11,17),p: 0.25 }, // 17.12. prvi krajec
+  { d: new Date(2026,11,24),p: 0.5  }, // 24.12. polna luna
+  { d: new Date(2026,11,30),p: 0.75 }, // 30.12. zadnji krajec
 ];
 
 function getMoonPhase(date) {
-  // Poišči najbližjo novo luno pred ali na ta datum
   const ms = date.getTime();
-  let ref = NEW_MOONS_2026[0];
-  for (const nm of NEW_MOONS_2026) {
-    if (nm.getTime() <= ms) ref = nm;
-    else break;
+  
+  // Poišči dve sosednji točki (pred in po)
+  let before = MOON_PHASES_2026[0];
+  let after  = MOON_PHASES_2026[MOON_PHASES_2026.length - 1];
+  
+  for (let i = 0; i < MOON_PHASES_2026.length - 1; i++) {
+    if (MOON_PHASES_2026[i].d.getTime() <= ms && MOON_PHASES_2026[i+1].d.getTime() > ms) {
+      before = MOON_PHASES_2026[i];
+      after  = MOON_PHASES_2026[i+1];
+      break;
+    }
   }
-  const daysSince = (ms - ref.getTime()) / (1000*60*60*24);
-  const cycle = 29.53058770576;
-  const phase = (daysSince % cycle) / cycle; // 0..1
-
-  // 8 faz
+  
+  // Interpoliraj fazo med dvema točkama
+  const total = after.d.getTime() - before.d.getTime();
+  const elapsed = ms - before.d.getTime();
+  let ratio = total > 0 ? elapsed / total : 0;
+  
+  // Upoštevaj prehod čez 0 (zadnji krajec → nova luna)
+  let pBefore = before.p;
+  let pAfter  = after.p;
+  if (pAfter < pBefore) pAfter += 1; // prehod čez 0
+  
+  let phase = pBefore + ratio * (pAfter - pBefore);
+  if (phase >= 1) phase -= 1;
+  
+  // 8 faz z natančnimi mejami
   if (phase < 0.0625 || phase >= 0.9375) return { emoji: '🌑', name: 'Nova luna' };
   if (phase < 0.1875) return { emoji: '🌒', name: 'Mlaj (raste)' };
   if (phase < 0.3125) return { emoji: '🌓', name: 'Prva četrtina' };
@@ -271,6 +326,8 @@ function getMoonPhase(date) {
   if (phase < 0.8125) return { emoji: '🌗', name: 'Zadnja četrtina' };
   return { emoji: '🌘', name: 'Mlaj (pojema)' };
 }
+
+
 
 // ── URNIK ──
 const SCHEDULE = {
