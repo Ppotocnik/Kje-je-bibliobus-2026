@@ -1,5 +1,5 @@
 // Bibliobus Service Worker – offline podpora
-const CACHE = 'bibliobus-v1';
+const CACHE = 'bibliobus-v2';
 const ASSETS = [
   './',
   './index.html',
