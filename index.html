@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Bibliobus – Razpored obiskov 2026</title>
 
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G9SDTXHN42"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G9SDTXHN42');
+</script>
+
+
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d1f3c">
@@ -159,20 +169,90 @@
   </div>
 </div>
 <script>
+
+// ── ANALITIKA (Google Analytics 4) ──
+const GA_MEASUREMENT_ID = 'G-G9SDTXHN42';
+let searchAnalyticsTimer = null;
+let lastTrackedSearchTerm = '';
+
+function trackEvent(eventName, params = {}) {
+  if (typeof gtag !== 'function') return;
+  gtag('event', eventName, {
+    app_name: 'bibliobus_2026',
+    ...params
+  });
+}
+
+function escapeHtmlAttr(value) {
+  return String(value).replace(/[&<>"']/g, function(ch) {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);
+  });
+}
+
+function trackMapClick(stopName, context) {
+  trackEvent('open_maps', {
+    stop_name: stopName,
+    context: context || 'unknown'
+  });
+}
+
+function scheduleSearchAnalytics(searchTerm, resultDays, resultStops) {
+  const normalized = String(searchTerm || '').trim().toLowerCase();
+  if (normalized.length < 2) return;
+  clearTimeout(searchAnalyticsTimer);
+  searchAnalyticsTimer = setTimeout(function() {
+    if (normalized === lastTrackedSearchTerm) return;
+    lastTrackedSearchTerm = normalized;
+    trackEvent('search_stop', {
+      search_term: normalized,
+      result_days: resultDays,
+      result_stops: resultStops
+    });
+  }, 700);
+}
+
+window.addEventListener('appinstalled', function() {
+  trackEvent('install_pwa', {
+    method: 'browser_appinstalled'
+  });
+});
+
+window.addEventListener('beforeinstallprompt', function() {
+  trackEvent('pwa_prompt_shown', {
+    method: 'browser_beforeinstallprompt'
+  });
+});
+
+document.addEventListener('click', function(event) {
+  const mapLink = event.target.closest('[data-analytics-event="open_maps"]');
+  if (mapLink) {
+    trackMapClick(mapLink.dataset.stop || '', mapLink.dataset.context || '');
+  }
+
+  const externalLink = event.target.closest('a[target="_blank"]');
+  if (externalLink && !mapLink) {
+    trackEvent('external_link_click', {
+      link_url: externalLink.href,
+      link_text: (externalLink.textContent || '').trim().slice(0, 80)
+    });
+  }
+});
+
+
 // ── KOORDINATE postajališč ──
 const COORDS = {
-  "Apače TRG":      [46.3758548, 15.8003062],
+  "Apače TRG":      [46.3759444, 15.8005556],
   "Borovci GD":     [46.4173849, 15.9425824],
-  "Breg AP":        [46.41623,   15.8544271],
-  "Budina-Brstje VRT": [46.3947247, 15.7227077], // Cirkovce AP approx
+  "Breg AP":        [46.3387222, 15.7365556],
+  "Budina-Brstje VRT": [46.4166389, 15.8901389], // Cirkovce AP approx
   "Bukovci GD":     [46.3866788, 15.9603764],
-  "Cirkovce AP":    [46.394844,  15.723058],
+  "Cirkovce AP":    [46.3942222, 15.7281667],
   "Cirkovce OŠ":    [46.3947247, 15.7227077],
   "Cirkulane OŠ":   [46.3436373, 15.9942649],
   "Destrnik GD":    [46.4929574, 15.8756792],
   "Destrnik OŠ":    [46.4892993, 15.8758692],
   "Destrnik VRT":   [46.4884599, 15.8774212],
-  "Dobrina AP":     [46.3290,    15.8810],
+  "Dobrina AP":     [46.2845833, 15.8073611],
   "Dornava OŠ":     [46.4340795, 15.950237],
   "Dornava ZAV":    [46.4318941, 15.946188],
   "Draženci GD":    [46.3889258, 15.8439116],
@@ -194,23 +274,23 @@ const COORDS = {
   "Markovci OŠ":    [46.3952162, 15.9323034],
   "Moškanjci GD":   [46.4176211, 15.9952992],
   "Nova vas GD":    [46.3839171, 15.9372789],
-  "Pleterje TRG":   [46.3695625, 15.902217],
+  "Pleterje TRG":   [46.3804444, 15.7517222],
   "Podlehnik OŠ":   [46.3357092, 15.8805657],
   "Polenšak VD":    [46.4665592, 16.0028349],
   "Ptujska Gora RP":[46.3557987, 15.760899],
   "Ptujska Gora GD":[46.3514643, 15.7595196],
-  "Sela OŠ":        [46.3695625, 15.902217],
+  "Sela OŠ":        [46.3715833, 15.8288611],
   "Sestrže VD":     [46.3563788, 15.6895413],
   "Slovenja vas GD":[46.4418277, 15.8126985],
   "Sobetinci GD":   [46.4021966, 15.9714727],
-  "Starošince GD":  [46.4232618, 15.7315479],
+  "Starošince GD":  [46.4231667, 15.7315278],
   "Stojnci VD":     [46.3795633, 15.9786421],
   "Stoperce OŠ":    [46.2894438, 15.7162525],
-  "Šikole TRG":     [46.403608,  15.7006216],
+  "Šikole TRG":     [46.4026944, 15.6994444],
   "Trnovska vas OŠ":[46.4892993, 15.8758692],
   "Turnišče GD":    [46.399186,  15.8612668],
   "Videm OŠ":       [46.3695625, 15.902217],
-  "Videm VRT":      [46.3695625, 15.905],
+  "Videm VRT":      [46.3697778, 15.9029722],
   "Vitomarci OŠ":   [46.5226963, 15.9364385],
   "Zavrč OŠ":       [46.385640,  16.0456261],
   "Zavrč TRG":      [46.3780372, 16.0545602],
@@ -546,24 +626,38 @@ function renderDay(d){
       const type=parts[parts.length-1];
       const place=parts.slice(0,-1).join(' ');
       const url=mapsUrl(s.n);
-      const tag=url?'a href="'+url+'" target="_blank"':'div';
+      const analyticsAttrs=url?' data-analytics-event="open_maps" data-stop="'+escapeHtmlAttr(s.n)+'" data-context="date_view"':'';
+      const tag=url?'a href="'+url+'" target="_blank"'+analyticsAttrs:'div';
       const close=url?'a':'div';
       html+='<'+tag+' class="bb-stop"><div class="bb-stop-icon '+ic.c+'">'+ic.e+'</div><span class="bb-stop-time">'+s.t+'</span><span class="bb-stop-name">'+place+'</span><span class="bb-stop-badge">'+type+'</span>'+(url?'<span class="bb-stop-map">📍</span>':'')+'</'+close+'>';
     }
     html+='</div><div class="bb-stop-count"><span class="bb-dot"></span> '+sorted.length+' postajališ'+(sorted.length===1?'če':(sorted.length<5?'ča':'č'))+' ta dan</div></div>';
   }
   el.innerHTML=html;
+  trackEvent('day_view', {
+    selected_date: key,
+    service_status: holiday ? 'holiday' : ((dow === 0 || dow === 6) ? 'weekend' : (!stops ? 'no_service' : 'service')),
+    stop_count: stops ? stops.length : 0,
+    moon_phase: moon.name
+  });
 }
 
 function changeDay(delta){
   cur=new Date(cur.getTime()+delta*86400000);
   document.getElementById('datePicker').value=toKey(cur);
+  trackEvent('day_navigation', {
+    direction: delta < 0 ? 'previous' : 'next',
+    selected_date: toKey(cur)
+  });
   renderDay(cur);
 }
 function onDateChange(v){
   if(!v)return;
   const p=v.split('-');
   cur=new Date(+p[0],+p[1]-1,+p[2]);
+  trackEvent('select_date', {
+    selected_date: v
+  });
   renderDay(cur);
 }
 function switchTab(tab){
@@ -571,6 +665,9 @@ function switchTab(tab){
   document.querySelectorAll('.bb-view').forEach(v=>v.classList.remove('active'));
   document.querySelector('[onclick="switchTab(\''+tab+'\')"]').classList.add('active');
   document.getElementById('view-'+tab).classList.add('active');
+  trackEvent('change_tab', {
+    tab_name: tab
+  });
 }
 function doSearch(q){
   const el=document.getElementById('searchOutput');
@@ -583,6 +680,8 @@ function doSearch(q){
     if(m.length)hits.push({key,stops:m});
   }
   hits.sort((a,b)=>a.key.localeCompare(b.key));
+  const resultStops=hits.reduce((sum,r)=>sum+r.stops.length,0);
+  scheduleSearchAnalytics(q, hits.length, resultStops);
   if(!hits.length){el.innerHTML='<div style="color:#a0afc0;font-size:14px;padding:12px 0;">Ni zadetkov za &ldquo;'+q+'&rdquo;</div>';return;}
   let html='<div style="font-size:12px;color:#a0afc0;margin-bottom:10px;">'+hits.length+' dni z obiskom</div>';
   for(const r of hits){
@@ -590,7 +689,8 @@ function doSearch(q){
     html+='<div class="bb-result-group"><div class="bb-result-header">'+formatSL(d)+'</div>';
     for(const s of r.stops){
       const url=mapsUrl(s.n);
-      const tag=url?'a href="'+url+'" target="_blank"':'div';
+      const analyticsAttrs=url?' data-analytics-event="open_maps" data-stop="'+escapeHtmlAttr(s.n)+'" data-context="search_view"':'';
+      const tag=url?'a href="'+url+'" target="_blank"'+analyticsAttrs:'div';
       const close=url?'a':'div';
       html+='<'+tag+' class="bb-result-stop"><span class="bb-result-time">'+s.t+'</span><span style="flex:1">'+s.n+'</span>'+(url?'<span style="opacity:.5">📍</span>':'')+'</'+close+'>';
     }
